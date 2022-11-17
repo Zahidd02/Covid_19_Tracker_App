@@ -1,0 +1,17 @@
+<div>
+  <mat-card class="casesCard">
+      <h2 style="font-weight:bold">Live Cases by Country</h2>
+      <div class="scrollableCard">
+        <table class="table">
+          <tr *ngFor="let x of combinedArray">
+            <td>
+              {{x.country}}
+            </td>
+            <td>
+              <strong>{{x.case | number}}</strong> <!--'| number' adds appropriate commas to the number to make it user friendly-->
+            </td>
+          </tr>
+        </table>
+      </div>
+  </mat-card>
+</div>

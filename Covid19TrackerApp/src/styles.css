@@ -1,0 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: lightgrey;
+}
+
+/*All the below CSS properties are for Map Popups*/
+.custom-popup {
+  align-content: center;
+}
+
+.leaflet-popup-content {
+  width: 135px;
+}
+
+.leaflet-popup {
+  transform: translate3d(305px, 272px, 0px);
+  left: -80px;
+}
+
+#flag {
+  display: block;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 60px;
+  width: 110px;
+  margin-bottom: 5px;
+  box-shadow: 0 0 8px -4px rgb(0, 0, 0, 1);
+}
+
+#countryName {
+  font-weight: bold;
+  text-align: center;
+  font-size:18px;
+}
+
+#inner-content {
+  text-align: center;
+}
+

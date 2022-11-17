@@ -1,0 +1,25 @@
+<div class="app">
+  <div class="app_left">
+    <div class="app_header">
+      <h1>COVID-19 TRACKER</h1>
+      <form class="app_dropdown">
+        <mat-form-field appearance="fill">
+          <mat-label> Select Country </mat-label>
+          <mat-select (selectionChange)="onCountryChange($event.value)">
+            <!--This is used to call the onCountryChange method to change the info card details-->
+            <mat-option [value]="countries_mapper.get('Worldwide')"> Worldwide </mat-option>
+            <mat-option [value]="countries_mapper.get(country)" *ngFor="let country of countries"> {{country}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </div>
+    <div>
+      <app-info-box [countryInfoChild]="countryInfoParent"></app-info-box>
+      <app-map-component [locationData]="countryInfoParent"></app-map-component>
+    </div>
+  </div>
+  <div class="app_right">
+    <app-case-table [combinedArray]="countryBySortedCases"></app-case-table>
+    <app-line-graph></app-line-graph>
+  </div>
+</div>
