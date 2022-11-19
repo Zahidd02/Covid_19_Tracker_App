@@ -8,6 +8,7 @@ import 'chartjs-adapter-moment';
   templateUrl: './line-graph.component.html',
   styleUrls: ['./line-graph.component.css']
 })
+
 export class LineGraphComponent implements OnInit {
   xData: string[] = [];
   yData: number[] = [];

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injectable, Input } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import * as L from 'leaflet';
 import { DataSenderService } from '../Service/data-sender.service';
 
@@ -13,8 +13,6 @@ export class MapComponentComponent implements AfterViewInit {
   @Input() locationData: any;
   worldMap: any; 
   circle: any[] = [];
-  popupCountry: any[] = [];
-  isFirstTime: boolean = true;
 
   constructor(private service: DataSenderService) { }
 
