@@ -1,0 +1,11 @@
+.map-container {
+  border: 2px solid black;
+  border-radius: 20px;
+  box-shadow: 0 0 8px -4px rgb(0, 0, 0, 1);
+}
+
+#world-map {
+  border-radius: 20px;
+  background-color: white;
+  height: 470px;
+}
