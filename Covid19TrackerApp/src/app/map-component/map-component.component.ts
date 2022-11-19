@@ -1,29 +1,36 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Injectable, Input } from '@angular/core';
 import * as L from 'leaflet';
+import { DataSenderService } from '../Service/data-sender.service';
 
 @Component({
   selector: 'app-map-component',
   templateUrl: './map-component.component.html',
   styleUrls: ['./map-component.component.css']
 })
+
 export class MapComponentComponent implements AfterViewInit {
 
   @Input() locationData: any;
   worldMap: any; 
-  marker: any;
+  circle: any[] = [];
   popupCountry: any[] = [];
   isFirstTime: boolean = true;
+
+  constructor(private service: DataSenderService) { }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.getEveryCountriesData();
+    this.service.invokeMapStatChange.subscribe((caseType) => { //Binds the service emitter to do various tasks (here the task is to call 'mapStatChange()' method and pass a value)
+      this.mapStatChange(caseType);
+    })
   }
 
   ngOnChanges(): void {
-    if (this.locationData.countryInfo == undefined) {
+    if (this.locationData.countryInfo == undefined) { //returns the control as initially the data will be 'undefined', unless something is changed on the page
       return;
     }
-    this.worldMap.flyTo([this.locationData.countryInfo.lat, this.locationData.countryInfo.long], 4);//flies you off to another location. Weeeeeheee..Xd
+    this.worldMap.flyTo([this.locationData.countryInfo.lat, this.locationData.countryInfo.long], 5);//flies you off to another location. Weeeeeheee..Xd
     L.popup().setLatLng([this.locationData.countryInfo.lat, this.locationData.countryInfo.long]) // To open popup after map flies to the location.
       .setContent(this.customPopup(this.locationData.countryInfo.flag, this.locationData.country, this.locationData.cases, this.locationData.recovered, this.locationData.deaths))
       .openOn(this.worldMap);
@@ -36,8 +43,7 @@ export class MapComponentComponent implements AfterViewInit {
       maxBounds: [
         [85, 180],
         [-85, -180]
-      ], 
-      
+      ]     
     });
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -49,17 +55,17 @@ export class MapComponentComponent implements AfterViewInit {
     tiles.addTo(this.worldMap);
   }
 
-  getEveryCountriesData = async () => {
+  getEveryCountriesData = async (stat: string = 'cases', color: string = '#CC1034', multiplier: number = 100) => {
     await fetch("https://disease.sh/v3/covid-19/countries")
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         for (var item in data) {
-          var radius: number = Math.sqrt(data[item].cases) * 100; //The bigger the circle the more COVID is spread, the value '100' was obtained after several trials and errors.
+          var radius: number = Math.sqrt(data[item][stat]) * multiplier; //The bigger the circle the more COVID is spread, the value '100' was obtained after several trials and errors.
           var flagURL = data[item].countryInfo.flag;
-          this.marker = L.circle([data[item].countryInfo.lat, data[item].countryInfo.long], radius, { color: '#CC1034' }).addTo(this.worldMap);
-          this.marker.bindPopup(this.customPopup(flagURL, data[item].country, data[item].cases, data[item].recovered, data[item].deaths));
+          this.circle.push(L.circle([data[item].countryInfo.lat, data[item].countryInfo.long], radius, { color: color }).addTo(this.worldMap)
+            .bindPopup(this.customPopup(flagURL, data[item].country, data[item].cases, data[item].recovered, data[item].deaths)));
         }
       });
   }
@@ -74,5 +80,34 @@ export class MapComponentComponent implements AfterViewInit {
       "<div id='inner-content'>" + `<b>Deaths: </b>${deaths}` + "</div>" +
       "</div>";
     return result;
+  }
+
+  mapStatChange(stat: string) {
+    var color;
+    var multiplier;
+
+    this.clearContent();//Clears the variable 'this.circle' and removes all the previous circles from world map. They will be recreated from info-box
+
+    if (stat == "cases") {
+      color = '#CC1034'
+      multiplier = 100;
+    }
+    else if (stat == "recovered") {
+      multiplier = 90;
+      color = '#40B92B'
+    }
+    else {
+      multiplier = 700;
+      color = '#43565C'
+    }
+    this.getEveryCountriesData(stat, color, multiplier);
+  }
+
+  //Clears content on map
+  clearContent() : void { 
+    for (var item in this.circle) {
+      this.worldMap.removeLayer(this.circle[item]);
+    }
+    this.circle = [];
   }
 }

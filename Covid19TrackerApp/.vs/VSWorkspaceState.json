@@ -3,8 +3,8 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\case-table"
+    "\\src\\app\\Service"
   ],
-  "SelectedNode": "\\src\\app\\case-table\\case-table.component.html",
+  "SelectedNode": "\\src\\app\\Service",
   "PreviewInSolutionExplorer": false
 }

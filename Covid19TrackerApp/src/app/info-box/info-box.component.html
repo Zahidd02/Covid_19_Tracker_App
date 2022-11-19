@@ -1,20 +1,20 @@
 <div class="app_stats">
   <mat-card class="infoBox">
-    <mat-card-content class="mat-typography">
+    <mat-card-content class="mat-typography" (click)="toChangeMapService('cases')">
       <h2 class="infoBox_title mat-subheading-1" style="margin:0px; color:grey">Coronavirus Cases</h2>
       <h2 class="infoBox_cases" style="margin:0px">{{todayCases}}</h2>
       <h2 class="infoBox_total mat-subheading-1" style="margin: 0px; color:grey">{{cases}} Total</h2>
     </mat-card-content>
   </mat-card>
   <mat-card class="infoBox">
-    <mat-card-content class="mat-typography">
+    <mat-card-content class="mat-typography" (click)="toChangeMapService('recovered')">
       <h2 class="infoBox_title mat-subheading-1" style="margin:0px; color:grey">Recovered</h2>
       <h2 class="infoBox_cases" style="margin:0px">{{todayRecovered}}</h2>
       <h2 class="infoBox_total mat-subheading-1" style="margin: 0px; color:grey">{{recovered}} Total</h2>
     </mat-card-content>
   </mat-card>
   <mat-card class="infoBox">
-    <mat-card-content class="mat-typography">
+    <mat-card-content class="mat-typography" (click)="toChangeMapService('deaths')">
       <h2 class="infoBox_title mat-subheading-1" style="margin:0px; color:grey">Deaths</h2>
       <h2 class="infoBox_cases" style="margin:0px">{{todayDeaths}}</h2>
       <h2 class="infoBox_total mat-subheading-1" style="margin: 0px; color:grey">{{deaths}} Total</h2>
